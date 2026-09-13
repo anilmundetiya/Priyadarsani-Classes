@@ -15,7 +15,7 @@ export default function PublicFooter() {
               Guided by Prem Sir's vision of "Smart Learning. Better Future."
             </p>
             <p className="text-blue-400 italic text-sm mt-3 font-medium">
-              "Priyadarsani Classes — Where Learning Begins..."
+              "Priyadarshani Classes — Where Learning Begins..."
             </p>
             <div className="flex gap-3 mt-4">
               {[
@@ -72,14 +72,14 @@ export default function PublicFooter() {
               </li>
               <li className="flex gap-2 text-slate-400 text-sm">
                 <Mail className="w-4 h-4 mt-0.5 flex-shrink-0 text-blue-400" />
-                <span>info@priyadarsaniclasses.com</span>
+                <span>info@Priyadarshaniclasses.com</span>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between gap-4 text-slate-500 text-xs">
-          <p>© 2024 Priyadarsani Classes. All rights reserved.</p>
+          <p>© 2024 Priyadarshani Classes. All rights reserved.</p>
           <div className="flex gap-4">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>

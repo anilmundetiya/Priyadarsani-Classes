@@ -202,7 +202,7 @@ const handleSave = async () => {
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Award className="w-4 h-4 text-amber-500" />
-                    Priyadarsani Classes
+                    Priyadarshani Classes
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Calendar className="w-4 h-4 text-green-500" />

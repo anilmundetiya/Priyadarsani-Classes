@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Seed Admin User
-    const adminEmail = "admin@priyadarsani.com";
+    const adminEmail = "admin@Priyadarshani.com";
     const existingAdmin = await db.select().from(users).where(eq(users.email, adminEmail)).limit(1);
     
     if (!existingAdmin[0]) {
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Seed Teacher (Prem Sir)
-    const teacherEmail = "prem.sir@priyadarsani.com";
+    const teacherEmail = "prem.sir@Priyadarshani.com";
     const existingTeacher = await db.select().from(users).where(eq(users.email, teacherEmail)).limit(1);
     let teacherUserId: string;
     let teacherProfileId: string;
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
         qualification: "M.Sc. Mathematics",
         specialization: "Mathematics & Science",
         experience: 15,
-        bio: "Prem Sir is the founder of Priyadarsani Classes with 15+ years of teaching experience. Known for making complex concepts simple and relatable.",
+        bio: "Prem Sir is the founder of Priyadarshani Classes with 15+ years of teaching experience. Known for making complex concepts simple and relatable.",
         status: "active",
         joinDate: "2010-01-01",
       }).returning();
@@ -181,8 +181,8 @@ export async function POST(req: NextRequest) {
       success: true,
       message: "Database seeded successfully",
       credentials: {
-        admin: { email: "admin@priyadarsani.com", password: "Admin@123" },
-        teacher: { email: "prem.sir@priyadarsani.com", password: "Teacher@123" },
+        admin: { email: "admin@Priyadarshani.com", password: "Admin@123" },
+        teacher: { email: "prem.sir@Priyadarshani.com", password: "Teacher@123" },
         student: { email: "rohan.sharma@student.com", password: "Student@123" },
       },
     });

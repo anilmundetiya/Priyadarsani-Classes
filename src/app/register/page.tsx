@@ -70,7 +70,7 @@ export default function RegisterPage() {
         return;
       }
 
-      toast.success("Account created successfully! Welcome to Priyadarsani Classes.");
+      toast.success("Account created successfully! Welcome to Priyadarshani Classes.");
       router.push("/student/dashboard");
     } catch {
       setError("Network error. Please try again.");
@@ -92,7 +92,7 @@ export default function RegisterPage() {
           </div>
 
           <div className="px-8 py-7">
-            <h2 className="text-2xl font-extrabold text-slate-900 mb-1">Join Priyadarsani</h2>
+            <h2 className="text-2xl font-extrabold text-slate-900 mb-1">Join Priyadarshani</h2>
             <p className="text-slate-500 text-sm mb-5">Start your learning journey today</p>
 
             {error && (

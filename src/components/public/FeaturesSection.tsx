@@ -82,7 +82,7 @@ export default function FeaturesSection() {
         {/* Section header */}
         <div className="text-center mb-12">
           <span className="inline-block bg-blue-50 text-blue-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-4 border border-blue-100">
-            Why Students & Parents Love Priyadarsani Classes
+            Why Students & Parents Love Priyadarshani Classes
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">
             Everything you need to{" "}

@@ -35,7 +35,7 @@ export default function Logo({
       <div className={cn("flex-shrink-0", className)}>
         <Image
           src="/images/logo.png"
-          alt="Priyadarsani Classes"
+          alt="Priyadarshani Classes"
           width={iconSize}
           height={iconSize}
           className="rounded-full object-cover"
@@ -54,7 +54,7 @@ export default function Logo({
             light ? "text-white" : "text-slate-900"
           )}
         >
-          PRIYADARSANI{" "}
+          Priyadarshani{" "}
           <span className="text-blue-500">CLASSES</span>
         </span>
         <span
@@ -74,7 +74,7 @@ export default function Logo({
     <div className={cn("flex items-center gap-3", className)}>
       <Image
         src="/images/classes-logo.jpeg"
-        alt="Priyadarsani Classes"
+        alt="Priyadarshani Classes"
         width={iconSize}
         height={iconSize}
         className="rounded-full object-cover flex-shrink-0"
@@ -87,7 +87,7 @@ export default function Logo({
             light ? "text-white" : "text-slate-900"
           )}
         >
-          PRIYADARSANI{" "}
+          Priyadarshani{" "}
           <span className="text-blue-500">CLASSES</span>
         </span>
         <span

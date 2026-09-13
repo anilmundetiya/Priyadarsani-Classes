@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "priyadarsani-classes-super-secret-key-2024"
+  process.env.JWT_SECRET || "Priyadarshani-classes-super-secret-key-2024"
 );
 
 const PUBLIC_PATHS = [

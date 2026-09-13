@@ -87,7 +87,7 @@ export default function StudentDashboardPage() {
             <h2 className="text-2xl font-extrabold text-white mb-1">
               {greeting}, {studentName}! 👋
             </h2>
-            <p className="text-slate-300 text-sm">Keep learning, keep growing with Priyadarsani Classes</p>
+            <p className="text-slate-300 text-sm">Keep learning, keep growing with Priyadarshani Classes</p>
           </div>
           <div className="bg-white/10 rounded-xl px-4 py-3 text-right flex-shrink-0">
             <p className="text-blue-200 text-xs font-medium">"The expert in anything</p>

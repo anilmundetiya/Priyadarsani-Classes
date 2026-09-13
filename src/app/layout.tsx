@@ -3,13 +3,13 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
-  title: "Priyadarsani Classes — Smart Learning. Better Future.",
+  title: "Priyadarshani Classes — Smart Learning. Better Future.",
   description:
     "AI-powered coaching platform for Maharashtra State Board students in Mumbai. Expert teachers, personalized learning, and 24/7 AI doubt solving.",
   keywords:
-    "Priyadarsani Classes, coaching, Mumbai, Maharashtra State Board, Prem Sir, AI learning, tuition",
+    "Priyadarshani Classes, coaching, Mumbai, Maharashtra State Board, Prem Sir, AI learning, tuition",
   openGraph: {
-    title: "Priyadarsani Classes",
+    title: "Priyadarshani Classes",
     description: "Smart Learning. Better Future.",
     type: "website",
   },

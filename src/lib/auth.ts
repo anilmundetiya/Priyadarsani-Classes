@@ -6,7 +6,7 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "priyadarsani-classes-super-secret-key-2024"
+  process.env.JWT_SECRET || "Priyadarshani-classes-super-secret-key-2024"
 );
 
 const COOKIE_NAME = "pc_auth_token";

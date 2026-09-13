@@ -90,7 +90,7 @@ export default function ContactSection() {
                   {
                     icon: Mail,
                     label: "Email",
-                    value: "info@priyadarsaniclasses.com\n(to be confirmed)",
+                    value: "info@Priyadarshaniclasses.com\n(to be confirmed)",
                     color: "text-blue-600 bg-blue-50",
                   },
                   {
@@ -201,7 +201,7 @@ export default function ContactSection() {
                     Book Free Demo Class
                   </Button>
                   <p className="text-xs text-slate-400 text-center">
-                    By submitting, you agree to be contacted by Priyadarsani Classes.
+                    By submitting, you agree to be contacted by Priyadarshani Classes.
                   </p>
                 </form>
               </>

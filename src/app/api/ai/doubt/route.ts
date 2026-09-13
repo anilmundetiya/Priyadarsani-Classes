@@ -28,7 +28,7 @@ function buildSystemPrompt(
   subject: string,
   studentName: string
 ): string {
-  return `You are an expert AI tutor for Priyadarsani Classes, a coaching institute in Mumbai, Maharashtra, India. You are created by Prem Sir to help students learn better.
+  return `You are an expert AI tutor for Priyadarshani Classes, a coaching institute in Mumbai, Maharashtra, India. You are created by Prem Sir to help students learn better.
 
 STUDENT CONTEXT:
 - Student Name: ${studentName}
@@ -60,7 +60,7 @@ SUBJECT GUIDELINES:
 - History/SST: Connect facts to present-day relevance
 - Hindi/Marathi: Explain in the student's preferred language if needed
 
-You represent Priyadarsani Classes and Prem Sir's teaching philosophy: "Smart Learning. Better Future."`;
+You represent Priyadarshani Classes and Prem Sir's teaching philosophy: "Smart Learning. Better Future."`;
 }
 
 export async function POST(req: NextRequest) {
@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
       // Return a mock response if no API key
       const mockAnswer = `Thank you for your question, ${studentName}! 
 
-This is the AI Doubt Solver for Priyadarsani Classes. Currently, the AI service needs to be configured with an API key by the administrator.
+This is the AI Doubt Solver for Priyadarshani Classes. Currently, the AI service needs to be configured with an API key by the administrator.
 
 Your question about "${data.question.slice(0, 100)}..." has been received. Please contact your teacher or Prem Sir for assistance.
 

@@ -40,7 +40,7 @@ export default function NoticesPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-slate-900">Notices</h1>
-          <p className="text-slate-500 text-sm mt-0.5">Important announcements from Priyadarsani Classes</p>
+          <p className="text-slate-500 text-sm mt-0.5">Important announcements from Priyadarshani Classes</p>
         </div>
       </div>
 

@@ -5,7 +5,7 @@ const testimonials = [
   {
     name: "Parent of Class 10 Student",
     role: "Parent",
-    text: "Priyadarsani Classes has transformed my child's approach to studying. The AI doubt solver is available whenever needed, and the teachers are very dedicated.",
+    text: "Priyadarshani Classes has transformed my child's approach to studying. The AI doubt solver is available whenever needed, and the teachers are very dedicated.",
     rating: 5,
     placeholder: true,
   },
@@ -78,7 +78,7 @@ export default function TestimonialsSection() {
           <p className="text-2xl font-bold italic mb-4">
             "Education is not the filling of a pail, but the lighting of a fire."
           </p>
-          <p className="text-blue-200">— Prem Sir, Founder, Priyadarsani Classes</p>
+          <p className="text-blue-200">— Prem Sir, Founder, Priyadarshani Classes</p>
         </div>
       </div>
     </section>

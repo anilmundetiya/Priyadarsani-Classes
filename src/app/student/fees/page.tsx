@@ -106,7 +106,7 @@ export default function FeesPage() {
       {/* Note about online payment */}
       <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-sm text-blue-700">
         <p className="font-semibold mb-1">Online Payment Coming Soon</p>
-        <p>We're working on enabling UPI and online payment options. Currently, please pay your fees directly at the institute or via bank transfer to Priyadarsani Classes.</p>
+        <p>We're working on enabling UPI and online payment options. Currently, please pay your fees directly at the institute or via bank transfer to Priyadarshani Classes.</p>
       </div>
     </div>
   );
