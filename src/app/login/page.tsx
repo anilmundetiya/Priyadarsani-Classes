@@ -147,8 +147,8 @@ export default function LoginPage() {
             <div className="mt-6 p-4 bg-amber-50 border border-amber-100 rounded-xl">
               <p className="text-xs font-bold text-amber-700 mb-2">Demo Credentials (Development):</p>
               <div className="space-y-1 text-xs text-amber-600">
-                <p><span className="font-medium">Admin:</span> admin@Priyadarshani.com / Admin@123</p>
-                <p><span className="font-medium">Teacher:</span> prem.sir@Priyadarshani.com / Teacher@123</p>
+                <p><span className="font-medium">Admin:</span> admin@priyadarshani.com / Admin@123</p>
+                <p><span className="font-medium">Teacher:</span> prem.sir@priyadarshani.com / Teacher@123</p>
                 <p><span className="font-medium">Student:</span> rohan.sharma@student.com / Student@123</p>
               </div>
             </div>

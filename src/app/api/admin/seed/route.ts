@@ -33,9 +33,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Seed Admin User
-    const adminEmail = "admin@Priyadarshani.com";
+    const adminEmail = "admin@priyadarshani.com";
     const existingAdmin = await db.select().from(users).where(eq(users.email, adminEmail)).limit(1);
-    
+
     if (!existingAdmin[0]) {
       const adminHash = await hashPassword("Admin@123");
       await db.insert(users).values({
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Seed Teacher (Prem Sir)
-    const teacherEmail = "prem.sir@Priyadarshani.com";
+    const teacherEmail = "prem.sir@priyadarshani.com";
     const existingTeacher = await db.select().from(users).where(eq(users.email, teacherEmail)).limit(1);
     let teacherUserId: string;
     let teacherProfileId: string;
@@ -60,20 +60,26 @@ export async function POST(req: NextRequest) {
       }).returning();
       teacherUserId = teacherUser[0].id;
 
-      const teacherProfile = await db.insert(teachers).values({
-        userId: teacherUserId,
-        teacherId: "TCH001",
-        fullName: "Prem Sir",
-        email: teacherEmail,
-        mobile: "+91 98765 43210",
-        qualification: "M.Sc. Mathematics",
-        specialization: "Mathematics & Science",
-        experience: 15,
-        bio: "Prem Sir is the founder of Priyadarshani Classes with 15+ years of teaching experience. Known for making complex concepts simple and relatable.",
-        status: "active",
-        joinDate: "2010-01-01",
-      }).returning();
-      teacherProfileId = teacherProfile[0].id;
+      // Check if teacher profile already exists by teacherId
+      const existingTeacherProfile = await db.select().from(teachers).where(eq(teachers.teacherId, "TCH001")).limit(1);
+      if (!existingTeacherProfile[0]) {
+        const teacherProfile = await db.insert(teachers).values({
+          userId: teacherUserId,
+          teacherId: "TCH001",
+          fullName: "Prem Sir",
+          email: teacherEmail,
+          mobile: "+91 98765 43210",
+          qualification: "M.Sc. Mathematics",
+          specialization: "Mathematics & Science",
+          experience: 15,
+          bio: "Prem Sir is the founder of Priyadarshani Classes with 15+ years of teaching experience. Known for making complex concepts simple and relatable.",
+          status: "active",
+          joinDate: "2010-01-01",
+        }).returning();
+        teacherProfileId = teacherProfile[0].id;
+      } else {
+        teacherProfileId = existingTeacherProfile[0].id;
+      }
     } else {
       teacherUserId = existingTeacher[0].id;
       const tp = await db.select().from(teachers).where(eq(teachers.userId, teacherUserId)).limit(1);
@@ -181,8 +187,8 @@ export async function POST(req: NextRequest) {
       success: true,
       message: "Database seeded successfully",
       credentials: {
-        admin: { email: "admin@Priyadarshani.com", password: "Admin@123" },
-        teacher: { email: "prem.sir@Priyadarshani.com", password: "Teacher@123" },
+        admin: { email: "admin@priyadarshani.com", password: "Admin@123" },
+        teacher: { email: "prem.sir@priyadarshani.com", password: "Teacher@123" },
         student: { email: "rohan.sharma@student.com", password: "Student@123" },
       },
     });
