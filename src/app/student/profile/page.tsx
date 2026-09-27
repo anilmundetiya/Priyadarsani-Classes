@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { 
   User, Edit3, Save, X, Download, Camera, Bot, BookOpen, 
@@ -70,6 +70,7 @@ export default function StudentProfilePage() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [editData, setEditData] = useState<Partial<StudentProfile["student"]>>({});
 
   useEffect(() => {
@@ -93,52 +94,90 @@ export default function StudentProfilePage() {
     setEditing(false);
   };
 
-const handleSave = async () => {
-  setSaving(true);
-  try {
-    const payload = {
-      fullName: editData.fullName,
-      mobile: editData.mobile,
-      dateOfBirth: editData.dateOfBirth,
-      gender: editData.gender,
-      address: editData.address,
-      city: editData.city,
-      pincode: editData.pincode,
-      school: editData.school,
-      fatherName: editData.fatherName,
-      motherName: editData.motherName,
-      guardianMobile: editData.guardianMobile,
-      parentEmail: editData.parentEmail,
-    };
-    const res = await fetch("/api/students/profile", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setProfile((prev) => prev ? { ...prev, student: { ...prev.student, ...data.student } } : prev);
-      setEditing(false);
-      toast.success("Profile updated successfully!");
-    } else {
-      toast.error(data.error || "Failed to update profile");
-    }
-  } catch {
-    toast.error("Network error. Please try again.");
-  } finally {
-    setSaving(false);
-  }
-};
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be less than 5MB");
+      return;
+    }
+
+    setUploadingImage(true);
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const res = await fetch("/api/students/profile/image", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      
+      if (res.ok) {
+        setProfile((prev) => prev ? { ...prev, student: { ...prev.student, profileImage: data.imageUrl } } : prev);
+        toast.success("Profile picture updated!");
+      } else {
+        toast.error(data.error || "Upload failed");
+      }
+    } catch {
+      toast.error("Network error during upload");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleDownloadProfile = () => {
+    window.print();
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const payload = {
+        fullName: editData.fullName,
+        mobile: editData.mobile,
+        dateOfBirth: editData.dateOfBirth,
+        gender: editData.gender,
+        address: editData.address,
+        city: editData.city,
+        pincode: editData.pincode,
+        school: editData.school,
+        fatherName: editData.fatherName,
+        motherName: editData.motherName,
+        guardianMobile: editData.guardianMobile,
+        parentEmail: editData.parentEmail,
+      };
+      const res = await fetch("/api/students/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setProfile((prev) => prev ? { ...prev, student: { ...prev.student, ...data.student } } : prev);
+        setEditing(false);
+        toast.success("Profile updated successfully!");
+      } else {
+        toast.error(data.error || "Failed to update profile");
+      }
+    } catch {
+      toast.error("Network error. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (loading) return <DashboardSkeleton />;
 
   const student = profile?.student;
 
   return (
-    <div className="space-y-6 animate-fade-in-up max-w-7xl mx-auto">
+    <div className="space-y-6 animate-fade-in-up max-w-7xl mx-auto print:bg-white print:m-0 print:p-0">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between print:hidden">
         <div>
           <h1 className="text-2xl font-extrabold text-slate-900">My Profile</h1>
           <p className="text-slate-500 text-sm mt-0.5">
@@ -147,14 +186,14 @@ const handleSave = async () => {
             My Profile
           </p>
         </div>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" onClick={handleDownloadProfile}>
           <Download className="w-4 h-4" />
           Download Profile
         </Button>
       </div>
 
       {/* Profile Header Card */}
-      <Card className="relative overflow-hidden">
+      <Card className="relative overflow-hidden print:border-none print:shadow-none">
         <div className="flex flex-col sm:flex-row gap-6">
           {/* Avatar */}
           <div className="relative flex-shrink-0">
@@ -164,7 +203,7 @@ const handleSave = async () => {
                 <img
                   src={student.profileImage}
                   alt={student.fullName}
-                  className="w-full h-full object-cover rounded-2xl"
+                  className={`w-full h-full object-cover rounded-2xl ${uploadingImage ? 'opacity-50' : ''}`}
                 />
               ) : (
                 <span className="text-white text-4xl font-extrabold">
@@ -172,7 +211,21 @@ const handleSave = async () => {
                 </span>
               )}
             </div>
-            <button className="absolute -bottom-1 -right-1 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center shadow-md hover:bg-blue-700 transition-colors">
+            
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              className="hidden" 
+              accept="image/*"
+              onChange={handleImageUpload}
+              disabled={uploadingImage}
+            />
+            
+            <button 
+              className="absolute -bottom-1 -right-1 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center shadow-md hover:bg-blue-700 transition-colors print:hidden"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploadingImage}
+            >
               <Camera className="w-4 h-4 text-white" />
             </button>
           </div>

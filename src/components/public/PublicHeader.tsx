@@ -7,12 +7,12 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#courses", label: "Courses" },
-  { href: "#ai-learning", label: "AI Learning" },
-  { href: "#teachers", label: "Teachers" },
-  { href: "#contact", label: "Contact" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/courses", label: "Courses" },
+  { href: "/ai-learning", label: "AI Learning" },
+  { href: "/teachers", label: "Teachers" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function PublicHeader() {

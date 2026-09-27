@@ -1,121 +1,134 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Clock, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
-import Card from "@/components/ui/Card";
-import StatCard from "@/components/ui/StatCard";
-import Badge from "@/components/ui/Badge";
 import { DashboardSkeleton } from "@/components/ui/LoadingSkeleton";
-import EmptyState from "@/components/ui/EmptyState";
+import Card from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
+import { Calendar, Clock, CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
-interface AttendanceData {
-  attendance: Array<{ id: string; date: string; status: string; remarks: string | null }>;
-  stats: { total: number; present: number; absent: number; percentage: number };
+interface AttendanceRecord {
+  id: string;
+  date: string;
+  status: "present" | "absent" | "late" | "excused";
+  remarks: string | null;
+  subject: string | null;
+  teacher: string | null;
 }
 
-const statusConfig: Record<string, { label: string; color: "green" | "red" | "yellow" | "gray"; icon: React.ElementType }> = {
-  present: { label: "Present", color: "green", icon: CheckCircle },
-  absent: { label: "Absent", color: "red", icon: XCircle },
-  late: { label: "Late", color: "yellow", icon: AlertTriangle },
-  excused: { label: "Excused", color: "gray", icon: AlertTriangle },
-};
-
 export default function AttendancePage() {
-  const [data, setData] = useState<AttendanceData | null>(null);
+  const [records, setRecords] = useState<AttendanceRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/attendance?limit=60")
-      .then(r => r.json())
-      .then(d => { setData(d); setLoading(false); })
+    fetch("/api/student/attendance")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setRecords(data);
+        setLoading(false);
+      })
       .catch(() => setLoading(false));
   }, []);
 
   if (loading) return <DashboardSkeleton />;
 
-  const stats = data?.stats;
-  const percentage = stats?.percentage || 0;
-  const attendanceColor = percentage >= 75 ? "text-green-600" : percentage >= 60 ? "text-amber-600" : "text-red-600";
+  const presentCount = records.filter(r => r.status === "present").length;
+  const totalCount = records.length;
+  const percentage = totalCount === 0 ? 100 : Math.round((presentCount / totalCount) * 100);
 
   return (
-    <div className="space-y-6 animate-fade-in-up max-w-4xl mx-auto">
+    <div className="space-y-6 animate-fade-in-up">
       <div>
-        <h1 className="text-2xl font-extrabold text-slate-900">Attendance</h1>
-        <p className="text-slate-500 text-sm mt-0.5">Track your attendance record</p>
+        <h1 className="text-2xl font-extrabold text-slate-900">Attendance Tracker</h1>
+        <p className="text-slate-500 mt-1">View your daily attendance and overall percentage.</p>
       </div>
 
-      {/* Summary stats */}
-      <div className="grid sm:grid-cols-3 gap-4">
-        <StatCard
-          title="Attendance"
-          value={`${percentage}%`}
-          subtitle="Overall"
-          color={attendanceColor}
-          icon={<Clock className="w-5 h-5" />}
-          iconBg={percentage >= 75 ? "bg-green-50" : "bg-amber-50"}
-        />
-        <StatCard
-          title="Present"
-          value={stats?.present || 0}
-          subtitle={`of ${stats?.total || 0} classes`}
-          color="text-green-600"
-          icon={<CheckCircle className="w-5 h-5 text-green-600" />}
-          iconBg="bg-green-50"
-        />
-        <StatCard
-          title="Absent"
-          value={stats?.absent || 0}
-          subtitle="Total absences"
-          color="text-red-500"
-          icon={<XCircle className="w-5 h-5 text-red-500" />}
-          iconBg="bg-red-50"
-        />
-      </div>
-
-      {/* Attendance warning */}
-      {percentage < 75 && percentage > 0 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="font-semibold text-amber-800">Low Attendance Warning</p>
-            <p className="text-sm text-amber-700 mt-0.5">Your attendance is below 75%. Please attend classes regularly to avoid any academic issues.</p>
+      {/* Summary Cards */}
+      <div className="grid sm:grid-cols-3 gap-6">
+        <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100 flex items-center gap-4 p-6">
+          <div className="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
+            <Calendar className="w-6 h-6" />
           </div>
-        </div>
-      )}
+          <div>
+            <p className="text-sm font-medium text-blue-600/80 uppercase tracking-wider">Overall</p>
+            <p className="text-3xl font-black text-blue-900">{percentage}%</p>
+          </div>
+        </Card>
+        
+        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-100 flex items-center gap-4 p-6">
+          <div className="w-12 h-12 bg-green-500 text-white rounded-xl flex items-center justify-center shadow-lg shadow-green-200">
+            <CheckCircle className="w-6 h-6" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-green-700/80 uppercase tracking-wider">Present Days</p>
+            <p className="text-3xl font-black text-green-900">{presentCount}</p>
+          </div>
+        </Card>
 
-      {/* Attendance list */}
-      <Card>
-        <h2 className="font-bold text-slate-800 mb-4">Attendance Records</h2>
-        {(!data?.attendance || data.attendance.length === 0) ? (
-          <EmptyState
-            icon={<Clock className="w-8 h-8" />}
-            title="No attendance records"
-            description="Your attendance will appear here once marked by your teacher"
-          />
+        <Card className="bg-gradient-to-br from-red-50 to-rose-50 border-red-100 flex items-center gap-4 p-6">
+          <div className="w-12 h-12 bg-red-500 text-white rounded-xl flex items-center justify-center shadow-lg shadow-red-200">
+            <XCircle className="w-6 h-6" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-red-700/80 uppercase tracking-wider">Absent Days</p>
+            <p className="text-3xl font-black text-red-900">{totalCount - presentCount}</p>
+          </div>
+        </Card>
+      </div>
+
+      {/* Records Table */}
+      <Card className="p-0 overflow-hidden border border-slate-200 shadow-sm">
+        <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+          <h2 className="font-bold text-slate-800 text-lg">Recent Records</h2>
+        </div>
+        
+        {records.length === 0 ? (
+          <div className="p-12 text-center text-slate-500">
+            <Clock className="w-12 h-12 mx-auto text-slate-300 mb-3" />
+            <p className="font-medium text-lg text-slate-600">No attendance records found.</p>
+            <p className="text-sm mt-1">Your attendance will appear here once marked by teachers.</p>
+          </div>
         ) : (
-          <div className="space-y-2">
-            {data.attendance.map(record => {
-              const config = statusConfig[record.status] || statusConfig.present;
-              const Icon = config.icon;
-              return (
-                <div key={record.id} className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
-                      record.status === "present" ? "bg-green-50" : record.status === "absent" ? "bg-red-50" : "bg-amber-50"
-                    }`}>
-                      <Icon className={`w-4 h-4 ${
-                        record.status === "present" ? "text-green-600" : record.status === "absent" ? "text-red-500" : "text-amber-500"
-                      }`} />
-                    </div>
-                    <div>
-                      <p className="font-medium text-slate-800 text-sm">{formatDate(record.date)}</p>
-                      {record.remarks && <p className="text-xs text-slate-500">{record.remarks}</p>}
-                    </div>
-                  </div>
-                  <Badge variant={config.color}>{config.label}</Badge>
-                </div>
-              );
-            })}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-100 text-xs uppercase tracking-wider text-slate-500 font-semibold">
+                  <th className="px-6 py-4">Date</th>
+                  <th className="px-6 py-4">Subject</th>
+                  <th className="px-6 py-4">Teacher</th>
+                  <th className="px-6 py-4">Status</th>
+                  <th className="px-6 py-4">Remarks</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {records.map((record) => (
+                  <tr key={record.id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                      {formatDate(record.date)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                      {record.subject || "General"}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                      {record.teacher || "—"}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Badge 
+                        variant={
+                          record.status === "present" ? "green" : 
+                          record.status === "absent" ? "red" : 
+                          record.status === "late" ? "amber" : "blue"
+                        }
+                      >
+                        {record.status}
+                      </Badge>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-slate-500 italic">
+                      {record.remarks || "—"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </Card>
